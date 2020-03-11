@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.itcast.dao.system.DeptDao">
+
+    <!--
+        根据子部门,查询父部门
+            配置典型的一对一关系
+            #查询全部
+            SELECT * FROM pe_dept
+            #根据id查询父部门,父部门=子部门的parent_id获取
+            SELECT * FROM pe_dept WHERE dept_id=100
+    -->
+
+    <resultMap id="BaseResultMap" type="cn.itcast.domain.system.Dept">
+        <id property="id" column="dept_id"></id>
+        <result property="deptName" column="dept_name"></result>
+        <result property="state" column="state"></result>
+        <result property="companyId" column="company_id"></result>
+        <result property="companyName" column="company_name"></result>
+        <!--配置子部门到父部门的一对一关系-->
+        <association property="parent" javaType="cn.itcast.domain.system.Dept" select="findById"
+                     column="parent_id"></association>
+    </resultMap>
+    
+    <select id="findAll" resultMap="BaseResultMap">
+        select * from pe_dept where company_id=#{companyId}
+    </select>
+    
+    <select id="findById" resultMap="BaseResultMap">
+        select * from pe_dept where dept_id=#{id}
+    </select>
+
+
+    <!--删除部门-->
+    <delete id="delete">
+        delete from pe_dept where dept_id=#{id}
+    </delete>
+
+    <!--保存部门-->
+    <insert id="save">
+        insert into pe_dept (
+            dept_id,
+            dept_name,
+            parent_id,
+            state,
+            company_id,
+            company_name
+        )
+        values (
+            #{id},
+            #{deptName},
+            #{parent.id},
+            #{state},
+            #{companyId},
+            #{companyName}
+        )
+    </insert>
+    
+    <!--更新部门-->
+    <update id="update">
+        update pe_dept
+        set
+          dept_name=#{deptName},
+          parent_id=#{parent.id},
+          state=#{state},
+          company_id=#{companyId},
+          company_name=#{companyName}
+        where dept_id=#{id}
+    </update>
+</mapper>

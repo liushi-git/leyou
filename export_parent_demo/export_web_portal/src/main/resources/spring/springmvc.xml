@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
+        http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
+        http://code.alibabatech.com/schema/dubbo http://code.alibabatech.com/schema/dubbo/dubbo.xsd
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+
+    <!--包扫描-->
+    <context:component-scan base-package="cn.itcast.controller"></context:component-scan>
+
+    <!--驱动,注册类型转化器-->
+    <mvc:annotation-driven></mvc:annotation-driven>
+
+    <!--对spring和dubbo进行整合: 整合服务消费者-->
+    <!--1.应用名称-->
+    <dubbo:application name="export_web_portal"></dubbo:application>
+    <!--2.配置注册中心-->
+    <dubbo:registry address="zookeeper://127.0.0.1:2181"></dubbo:registry>
+    <!--3.配置dubbo注解的包扫描-->
+    <dubbo:annotation package="cn.itcast.controller"></dubbo:annotation>
+
+</beans>
